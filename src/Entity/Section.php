@@ -5,14 +5,16 @@ namespace App\Entity;
 use App\Constant\SectionImageName;
 use App\Repository\SectionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity(repositoryClass: SectionRepository::class)]
 class Section
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\Column(type: 'guid', length: 36)]
+    protected ?string $id = null;
 
     #[ORM\Column(unique: false, nullable: false, options: ["default" => 0])]
     private int $sortOrder = 0;
@@ -32,9 +34,15 @@ class Section
     #[ORM\Column(length: 100, unique: false, nullable: false, options: ["default" => "mountain-landscape-1"])]
     private string $imageName = SectionImageName::MOUNTAIN_LANDSCAPE1;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(?string $id): self
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getSortOrder(): int
