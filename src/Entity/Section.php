@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Constant\SectionImageName;
 use App\Repository\SectionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -33,6 +35,14 @@ class Section
 
     #[ORM\Column(length: 100, unique: false, nullable: false, options: ["default" => "mountain-landscape-1"])]
     private string $imageName = SectionImageName::MOUNTAIN_LANDSCAPE1;
+
+    #[ORM\OneToMany(mappedBy: 'section', targetEntity: Webcam::class)]
+    private Collection $webcams;
+
+    public function __construct()
+    {
+        $this->webcams = new ArrayCollection();
+    }
 
     public function getId(): ?string
     {
@@ -108,6 +118,36 @@ class Section
     public function setImageName(string $imageName): self
     {
         $this->imageName = $imageName;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Webcam>
+     */
+    public function getWebcams(): Collection
+    {
+        return $this->webcams;
+    }
+
+    public function addWebcam(Webcam $webcam): self
+    {
+        if (!$this->webcams->contains($webcam)) {
+            $this->webcams->add($webcam);
+            $webcam->setSection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWebcam(Webcam $webcam): self
+    {
+        if ($this->webcams->removeElement($webcam)) {
+            // set the owning side to null (unless already changed)
+            if ($webcam->getSection() === $this) {
+                $webcam->setSection(null);
+            }
+        }
+
         return $this;
     }
 }

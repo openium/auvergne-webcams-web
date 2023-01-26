@@ -34,9 +34,9 @@ classDiagram
     Webcam : +string title
     Webcam : +int sortOrder
     Webcam : +string type
-    Webcam : +?string link
+    Webcam : +string link
     Webcam : +?string linkHD
-    Webcam : +?string mapImageName
+    Webcam : +string mapImageName
     Webcam : +float latitude
     Webcam : +float longitude
     Webcam : +bool hidden
@@ -69,4 +69,3 @@ classDiagram
 - aurillac-landscape
 - allier-landscape
 - hl-landscape
-
