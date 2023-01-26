@@ -34,7 +34,11 @@ if (curl_errno($ch)) {
     $filename = $matches['filename'];
     $url = "https://public.dir-massif-central.magsys-services.net/$filename";
 
-    header("content-type: image/jpeg");
+    if (str_ends_width($filename, '.mp4')) {
+        header("content-type: video/mp4");
+    } else {
+        header("content-type: image/jpeg");
+    }
     echo file_get_contents($url);
 }
 
