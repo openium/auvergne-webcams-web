@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Constant\WebcamType;
 use App\Repository\WebcamRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,14 +18,14 @@ class Webcam
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column]
-    private ?int $sortOrder = null;
+    #[ORM\Column(unique: false, nullable: false, options: ["default" => 0])]
+    private int $sortOrder = 0;
 
-    #[ORM\Column(length: 100)]
-    private ?string $type = null;
+    #[ORM\Column(length: 100, options: ["default" => WebcamType::IMAGE])]
+    private string $type = WebcamType::IMAGE;
 
     #[ORM\Column(length: 255)]
-    private ?string $link = null;
+    private string $link = '';
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $linkHD = null;
@@ -38,8 +39,8 @@ class Webcam
     #[ORM\Column]
     private ?float $longitude = null;
 
-    #[ORM\Column]
-    private ?bool $isHidden = null;
+    #[ORM\Column(nullable: false, options: ["default" => true])]
+    private bool $isEnabled = true;
 
     #[ORM\Column(type: Types::ARRAY)]
     private array $tags = [];
@@ -143,12 +144,12 @@ class Webcam
 
     public function isIsHidden(): ?bool
     {
-        return $this->isHidden;
+        return $this->isEnabled;
     }
 
-    public function setIsHidden(bool $isHidden): self
+    public function setIsEnabled(bool $isEnabled): self
     {
-        $this->isHidden = $isHidden;
+        $this->isEnabled = $isEnabled;
         return $this;
     }
 

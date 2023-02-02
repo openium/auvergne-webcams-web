@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Constant\MapImage;
 use App\Constant\SectionImageName;
 use App\Repository\SectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,8 +34,19 @@ class Section
     #[ORM\Column(length: 7, unique: false, nullable: false)]
     private ?string $color = "#FFFFFF";
 
-    #[ORM\Column(length: 100, unique: false, nullable: false, options: ["default" => "mountain-landscape-1"])]
+    #[ORM\Column(
+        length: 100,
+        unique: false,
+        nullable: false,
+        options: ["default" => SectionImageName::MOUNTAIN_LANDSCAPE1]
+    )]
     private string $imageName = SectionImageName::MOUNTAIN_LANDSCAPE1;
+
+    #[ORM\Column(length: 255, nullable: false, options: ["default" => MapImage::MOUNTAIN])]
+    private string $mapImageName = MapImage::MOUNTAIN;
+
+    #[ORM\Column(nullable: false, options: ["default" => true])]
+    private bool $isEnabled = true;
 
     #[ORM\OneToMany(mappedBy: 'section', targetEntity: Webcam::class)]
     private Collection $webcams;
@@ -135,7 +147,6 @@ class Section
             $this->webcams->add($webcam);
             $webcam->setSection($this);
         }
-
         return $this;
     }
 
@@ -147,7 +158,6 @@ class Section
                 $webcam->setSection(null);
             }
         }
-
         return $this;
     }
 }
