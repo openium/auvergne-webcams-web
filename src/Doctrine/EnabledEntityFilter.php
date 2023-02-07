@@ -22,6 +22,6 @@ class EnabledEntityFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
-        return "{$targetTableAlias}.isEnabled = 1";
+        return "{$targetTableAlias}.is_enabled = 1";
     }
 }

@@ -46,6 +46,7 @@ class Section
     private string $mapImageName = MapImage::MOUNTAIN;
 
     #[ORM\Column(nullable: false, options: ["default" => true])]
+    #[Ignore]
     private bool $isEnabled = true;
 
     #[ORM\OneToMany(mappedBy: 'section', targetEntity: Webcam::class)]

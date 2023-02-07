@@ -6,6 +6,7 @@ use App\Constant\WebcamType;
 use App\Repository\WebcamRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: WebcamRepository::class)]
 class Webcam
@@ -40,6 +41,7 @@ class Webcam
     private ?float $longitude = null;
 
     #[ORM\Column(nullable: false, options: ["default" => true])]
+    #[Ignore]
     private bool $isEnabled = true;
 
     #[ORM\Column(type: Types::ARRAY)]
@@ -47,6 +49,7 @@ class Webcam
 
     #[ORM\ManyToOne(inversedBy: 'webcams')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?Section $section = null;
 
     public function getId(): ?int
