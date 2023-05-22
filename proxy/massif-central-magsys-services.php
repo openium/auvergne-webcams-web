@@ -28,18 +28,14 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 $result = curl_exec($ch);
 if (curl_errno($ch)) {
     echo 'Error: ' . curl_error($ch);
+    curl_close($ch);
 } else {
     // https://public.dir-massif-central.magsys-services.net/stream/LES_CHAZES/20180212/1_235918.jpg
     preg_match('/.+cam_previous = "(?P<filename>.+)";/', $result, $matches);
     $filename = $matches['filename'];
     $url = "https://public.dir-massif-central.magsys-services.net/$filename";
 
-    if (strpos($filename, '.mp4') !== false) {
-        header("content-type: video/mp4");
-    } else {
-        header("content-type: image/jpeg");
-    }
-    echo file_get_contents($url);
+    curl_close($ch);
+    header("Location: $url");
+    exit();
 }
-
-curl_close ($ch);
